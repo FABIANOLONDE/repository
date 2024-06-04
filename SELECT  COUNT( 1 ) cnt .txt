@@ -1,0 +1,290 @@
+SELECT  COUNT( 1 ) cnt 
+FROM cgdgw.T_GTW_JOURNAL
+WHERE 
+create_date_time >= to_char(sysdate-2/(24*60),'yyyymmddHH24miss') and tx_cd = 'signTransactionAsync'
+
+
+
+Transaction Auth
+
+
+  929  systemctl start zabbix-agent
+  930  systemctl stop zabbix-agent
+-----------------------------------------------------------------
+
+--------------Purging Consumer----------------
+declare
+v_user VARCHAR2(20) := '254719101879'; 
+begin
+delete from gsdbas.t_urm_poper where usr_no in (select usr_no from CSDURM.T_URM_PINF where REG_ID_CIPHER = v_user and usr_typ ='P');
+delete from CSDURM.T_URM_PCUS where CI_NO in (select CI_NO from CSDURM.T_URM_PINF where REG_ID_CIPHER = v_user and usr_typ ='P');
+delete from CSDURM.T_URM_PINF where REG_ID_CIPHER = v_user and  usr_typ ='P';
+commit;
+end;
+
+
+
+
+
+w---#################This is new clear merchant SQL Begin##########----
+---Step 1---
+delete  from GSDBAS.T_URM_MSTKHLD where MERC_OWN_NO in (select merc_own_no from GSDBAS.T_URM_MOWN where REG_MBL_CIPHER in ('59BAA8AE6B30B18FB495DF7CCBE42F7A'));
+---Step 2---
+delete from GSDBAS.T_URM_MOWN where REG_MBL_CIPHER in ('59BAA8AE6B30B18FB495DF7CCBE42F7A');
+--Step 3---:
+delete from CSDURM.T_URM_ECUS where bus_mbl_cipher in ('254722852221');
+--Step 4---
+delete from CSDURM.T_URM_ECROL where ctl_mbl_cipher in ('254722852221');
+--Step 5--
+delete from CSDURM.T_URM_PINF where usr_no in (select usr_no from GSDBAS.T_URM_MINF where merc_id in (select merc_id from GSDBAS.T_URM_OPER where usr_opr_mbl_cipher in ('59BAA8AE6B30B18FB495DF7CCBE42F7A')));
+-- Step 6---
+delete from GSDBAS.T_URM_MINF where merc_id in (select merc_id from GSDBAS.T_URM_OPER where usr_opr_mbl_cipher in ('59BAA8AE6B30B18FB495DF7CCBE42F7A'));
+---Step 7---
+delete from GSDBAS.t_urm_mownjnl where REG_MBL_CIPHER = '59BAA8AE6B30B18FB495DF7CCBE42F7A';
+---Step 8--
+delete from gsdbas.t_urm_mext where merc_id in (select merc_id from GSDBAS.T_URM_OPER where usr_opr_mbl_cipher in ('59BAA8AE6B30B18FB495DF7CCBE42F7A'));
+---Step 9 ----
+delete from GSDBAS.T_URM_OPER where usr_opr_mbl_cipher in ('59BAA8AE6B30B18FB495DF7CCBE42F7A') and MSHP_OPR_TYP ='O';
+--step 10
+delete from gsdbas.T_URM_MMNGRJNL where MBL_NO_CIPHER in ('59BAA8AE6B30B18FB495DF7CCBE42F7A');
+--step 11    
+delete from gsdbas.t_urm_mownjnl where reg_mbl_cipher = '59BAA8AE6B30B18FB495DF7CCBE42F7A';
+--step 12
+delete from csdurm.t_urm_ecus where bus_mbl_cipher = '254722852221';
+select * from gsdbas.t_urm_mownjnl where reg_mbl_cipher = '59BAA8AE6B30B18FB495DF7CCBE42F7A';
+commit;
+
+ ---oracle123---
+    -----------SELECT FROM TABLE QUERY---------727557465 ---------------254755036272  254725269545  254722279472
+SELECT * FROM GSDBAS.T_URM_MOWN WHERE reg_mbl_mask = '254****221';  
+
+update GSDBAS.T_URM_MOWN set KYC_STS = '2' , KYC_LVL = '2' WHERE MERC_OWN_NO = '2201000022130';
+
+---------query transactions----------------------------------------------------------
+select * from BSDDAS.T_DAS_ORDINF where MERC_ID = '8810000021529';
+
+--------------------------------------------------------------------------------------------724919981  713396331 254723067843
+
+--30 DAY LOAN---
+declare
+v_acct VARCHAR2(20) := '450200024722';
+begin
+UPDATE CSDLON.T_LON_ACMAIN SET NXT_REPAY_DT = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 4), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct ;
+UPDATE CSDLON.T_LON_PHS SET TERM_EXP = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 4), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '1';
+commit;
+end;
+
+-----LOAN COMPRESSION QUERY--------------
+declare
+v_acct VARCHAR2(20) := '450200000936';
+begin
+UPDATE CSDLON.T_LON_ACMAIN SET NXT_REPAY_DT = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 1), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct ;
+UPDATE CSDLON.T_LON_PHS SET TERM_EXP = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 1), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '1';
+UPDATE CSDLON.T_LON_PHS SET TERM_BGN = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 1), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '2';
+UPDATE CSDLON.T_LON_PHS SET TERM_EXP = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 2), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '2';
+UPDATE CSDLON.T_LON_PHS SET TERM_BGN = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 2), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '3';
+UPDATE CSDLON.T_LON_PHS SET TERM_EXP = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 3), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '3';
+UPDATE CSDLON.T_LON_PHS SET TERM_BGN = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 3), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '4';
+UPDATE CSDLON.T_LON_PHS SET TERM_EXP = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 4), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '4';
+UPDATE CSDLON.T_LON_PHS SET TERM_BGN = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 4), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '5';
+UPDATE CSDLON.T_LON_PHS SET TERM_EXP = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 5), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '5';
+UPDATE CSDLON.T_LON_PHS SET TERM_BGN = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 5), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '6';
+UPDATE CSDLON.T_LON_PHS SET TERM_EXP = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 6), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '6';
+UPDATE CSDLON.T_LON_PHS SET TERM_BGN = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 6), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '7';
+UPDATE CSDLON.T_LON_PHS SET TERM_EXP = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 7), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '7';
+UPDATE CSDLON.T_LON_PHS SET TERM_BGN = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 7), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '8';
+UPDATE CSDLON.T_LON_PHS SET TERM_EXP = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 8), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '8';
+UPDATE CSDLON.T_LON_PHS SET TERM_BGN = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 8), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '9';
+UPDATE CSDLON.T_LON_PHS SET TERM_EXP = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 9), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '9';
+UPDATE CSDLON.T_LON_PHS SET TERM_BGN = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 9), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '10';
+UPDATE CSDLON.T_LON_PHS SET TERM_EXP = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 10), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '10';
+UPDATE CSDLON.T_LON_PHS SET TERM_BGN = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 10), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '11';
+UPDATE CSDLON.T_LON_PHS SET TERM_EXP = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 11), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '11';
+UPDATE CSDLON.T_LON_PHS SET TERM_BGN = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 11), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '12';
+UPDATE CSDLON.T_LON_PHS SET TERM_EXP = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 12), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '12';
+UPDATE CSDLON.T_LON_PHS SET TERM_BGN = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 12), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '13';
+UPDATE CSDLON.T_LON_PHS SET TERM_EXP = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 13), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '13';
+UPDATE CSDLON.T_LON_PHS SET TERM_BGN = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 13), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '14';
+UPDATE CSDLON.T_LON_PHS SET TERM_EXP = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 14), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '14';
+UPDATE CSDLON.T_LON_PHS SET TERM_BGN = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 14), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '15';
+UPDATE CSDLON.T_LON_PHS SET TERM_EXP = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 15), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '15';
+UPDATE CSDLON.T_LON_PHS SET TERM_BGN = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 15), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '16';
+UPDATE CSDLON.T_LON_PHS SET TERM_EXP = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 16), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '16';
+UPDATE CSDLON.T_LON_PHS SET TERM_BGN = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 16), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '17';
+UPDATE CSDLON.T_LON_PHS SET TERM_EXP = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 17), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '17';
+UPDATE CSDLON.T_LON_PHS SET TERM_BGN = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 17), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '18';
+UPDATE CSDLON.T_LON_PHS SET TERM_EXP = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 18), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '18';
+UPDATE CSDLON.T_LON_PHS SET TERM_BGN = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 18), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '19';
+UPDATE CSDLON.T_LON_PHS SET TERM_EXP = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 19), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '19';
+UPDATE CSDLON.T_LON_PHS SET TERM_BGN = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 19), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '20';
+UPDATE CSDLON.T_LON_PHS SET TERM_EXP = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 20), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '20';
+UPDATE CSDLON.T_LON_PHS SET TERM_BGN = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 20), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '21';
+UPDATE CSDLON.T_LON_PHS SET TERM_EXP = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 21), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '21';
+UPDATE CSDLON.T_LON_PHS SET TERM_BGN = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 21), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '22';
+UPDATE CSDLON.T_LON_PHS SET TERM_EXP = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 22), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '22';
+UPDATE CSDLON.T_LON_PHS SET TERM_BGN = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 22), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '23';
+UPDATE CSDLON.T_LON_PHS SET TERM_EXP = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 23), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '23';
+UPDATE CSDLON.T_LON_PHS SET TERM_BGN = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 23), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '24';
+UPDATE CSDLON.T_LON_PHS SET TERM_EXP = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 24), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '24';
+UPDATE CSDLON.T_LON_PHS SET TERM_BGN = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 24), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '25';
+UPDATE CSDLON.T_LON_PHS SET TERM_EXP = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 25), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '25';
+UPDATE CSDLON.T_LON_PHS SET TERM_BGN = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 25), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '26';
+UPDATE CSDLON.T_LON_PHS SET TERM_EXP = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 26), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '26';
+UPDATE CSDLON.T_LON_PHS SET TERM_BGN = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 26), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '27';
+UPDATE CSDLON.T_LON_PHS SET TERM_EXP = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 27), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '27';
+UPDATE CSDLON.T_LON_PHS SET TERM_BGN = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 27), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '28';
+UPDATE CSDLON.T_LON_PHS SET TERM_EXP = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 28), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '28';
+UPDATE CSDLON.T_LON_PHS SET TERM_BGN = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 28), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '29';
+UPDATE CSDLON.T_LON_PHS SET TERM_EXP = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 29), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '29';
+UPDATE CSDLON.T_LON_PHS SET TERM_BGN = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 29), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '30';
+UPDATE CSDLON.T_LON_PHS SET TERM_EXP = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 30), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '30';
+UPDATE CSDLON.T_LON_PHS SET TERM_BGN = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 30), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '31';
+UPDATE CSDLON.T_LON_PHS SET TERM_EXP = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 31), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '31';
+UPDATE CSDLON.T_LON_PHS SET TERM_BGN = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 31), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '32';
+UPDATE CSDLON.T_LON_PHS SET TERM_EXP = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 32), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '32';
+UPDATE CSDLON.T_LON_PHS SET TERM_BGN = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 32), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '33';
+UPDATE CSDLON.T_LON_PHS SET TERM_EXP = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 33), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '33';
+UPDATE CSDLON.T_LON_PHS SET TERM_BGN = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 33), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '34';
+UPDATE CSDLON.T_LON_PHS SET TERM_EXP = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 34), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '34';
+UPDATE CSDLON.T_LON_PHS SET TERM_BGN = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 34), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '35';
+UPDATE CSDLON.T_LON_PHS SET TERM_EXP = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 35), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '35';
+UPDATE CSDLON.T_LON_PHS SET TERM_BGN = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 35), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '36';
+UPDATE CSDLON.T_LON_PHS SET TERM_EXP = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 36), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '36';
+UPDATE CSDLON.T_LON_PHS SET TERM_BGN = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 36), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '37';
+UPDATE CSDLON.T_LON_PHS SET TERM_EXP = (select to_char((to_date(cur_ac_dt, 'yyyymmdd') + 37), 'yyyymmdd') from CSDACM.t_pub_rsts) WHERE AC_NO = v_acct AND DEL_KEY = '0' AND TERM_NO = '37';
+commit;
+end;
+
+
+------od-------
+declare
+v_acct VARCHAR2(20) := '450200024692';
+BEGIN
+	UPDATE CSDLON.T_LON_ACMAIN
+SET NXT_REPAY_DT = (
+    SELECT TO_CHAR(TO_DATE(cur_ac_dt, 'yyyymmdd'), 'yyyymmdd')
+    FROM CSDACM.t_pub_rsts
+    -- Add a WHERE clause here if you need to specify which row to get cur_ac_dt from
+), 
+DUE_DT = (
+    SELECT TO_CHAR(TO_DATE(cur_ac_dt, 'yyyymmdd'), 'yyyymmdd')
+    FROM CSDACM.t_pub_rsts
+    -- Again, specify the row if needed
+)
+WHERE AC_NO = v_acct;
+
+commit;
+end;
+
+SELECT DUE_DT  FROM CSDLON.T_LON_ACMAIN WHERE AC_NO ='450200000881';
+
+
+INSERT INTO CSDURM.T_URM_PSCORE (USR_NO, PRD_CD, CRD_SCR, LMT_AMT, RSK_CLS, REQ_BUS_NO, CRE_DT, CRE_TM, UPD_DT, UPD_TM, NOD_ID, TM_SMP, REQ_ID, SCORE_CAT, CRE_OPR, UPD_OPR, ATH_OPR, INP_TM_SMP, CHK_TM_SMP, ATH_TM_SMP)
+VALUES ('4900001425', 'ELONGEN01', '0', '10000', ' ', 'NH8GZ69ETC79', '20230130', '210306', '20230919', '103943', 'customer.urm.s_0_92', '20230919103943+08', 'O!URM!', 'AAA', 'keT00001', 'keT00002', ' ', '20230801173850', '20230801173945', '');
+
+---------------------expire ref no.--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+update ASDSAP.T_SAP_LONAPL set exp_tm = '174159' , exp_dt = '20240120' WHERE REF_NO = 'MERLOFR180008';
+
+-- delete no-used shop
+-- backup
+create table gsdbas.T_URM_MSHP_20231110_1 as select * from gsdbas.T_URM_MSHP;
+-- delete
+delete from gsdbas.T_URM_MSHP where (MERC_ID, MSHP_ID) in (select shp.MERC_ID, shp.MSHP_ID from gsdbas.T_URM_MSHP shp left join gsdbas.T_URM_OPER oper on shp.MSHP_ID = oper.MSHP_ID where oper.MSHP_ID is null);
+
+--------------------------------------------------------------------------------
+
+INSERT INTO CGDGW.T_GTW_MERC_WHITELIST(WL_VAL, STATUS, REMARK, NOD_ID, REQ_ID, TM_SMP) VALUES('254724919981' , '1' , 'test2' , ' ' , ' ' , ' ' );
+
+INSERT INTO CGDGW.T_GTW_MERC_WHITELIST(WL_VAL, STATUS, REMARK, NOD_ID, REQ_ID, TM_SMP) VALUES('254724952600' , '1' , 'test' , ' ' , ' ' , ' ' );
+
+INSERT INTO CGDGW.T_GTW_MERC_WHITELIST(WL_VAL, STATUS, REMARK, NOD_ID, REQ_ID, TM_SMP) VALUES('254720729971' , '1' , 'test' , ' ' , ' ' , ' ' );
+
+INSERT INTO CGDGW.T_GTW_MERC_WHITELIST(WL_VAL, STATUS, REMARK, NOD_ID, REQ_ID, TM_SMP) VALUES('254778899070' , '1' , 'test' , ' ' , ' ' , ' ' );
+
+--------------------------------------------------------------------------------
+
+select shp.MERC_ID, shp.MSHP_ID, shp.CRE_DT, shp.PUSH_FLG, shp.MSHP_STS
+from gsdbas.T_URM_MSHP_20231110_1 shp
+left join gsdbas.T_URM_OPER oper on shp.MSHP_ID = oper.MSHP_ID
+where oper.MSHP_ID is null and shp.PUSH_FLG = 'Y'
+order by shp.CRE_DT desc;
+
+--------------------------------------------------------------------------------
+-- add to whitelist --
+INSERT INTO CGDGW.T_GTW_MERC_WHITELIST(WL_VAL, STATUS, REMARK, NOD_ID, REQ_ID, TM_SMP) VALUES('254706686842','1','tester',' ',' ',' ');
+INSERT INTO CGDGW.T_GTW_MERC_WHITELIST(WL_VAL, STATUS, REMARK, NOD_ID, REQ_ID, TM_SMP) VALUES('agnes.nyambura@ncbagroup.com','1','tester',' ',' ',' ');
+INSERT INTO CGDGW.T_GTW_MERC_WHITELIST(WL_VAL, STATUS, REMARK, NOD_ID, REQ_ID, TM_SMP) VALUES('254750452523','1','testing',' ',' ',' ');
+INSERT INTO CGDGW.T_GTW_MERC_WHITELIST(WL_VAL, STATUS, REMARK, NOD_ID, REQ_ID, TM_SMP) VALUES('254724847217','1','testing',' ',' ',' ');
+INSERT INTO CGDGW.T_GTW_MERC_WHITELIST(WL_VAL, STATUS, REMARK, NOD_ID, REQ_ID, TM_SMP) VALUES('254726860483','1','testing',' ',' ',' ');
+INSERT INTO CGDGW.T_GTW_MERC_WHITELIST(WL_VAL, STATUS, REMARK, NOD_ID, REQ_ID, TM_SMP) VALUES('254723233440','1','testing',' ',' ',' ');
+INSERT INTO CGDGW.T_GTW_MERC_WHITELIST(WL_VAL, STATUS, REMARK, NOD_ID, REQ_ID, TM_SMP) VALUES('254723067843','1','testing',' ',' ',' ');
+
+INSERT INTO CGDGW.T_GTW_MERC_WHITELIST(WL_VAL, STATUS, REMARK, NOD_ID, REQ_ID, TM_SMP) VALUES('ndambuki.bryan@gmail.com','1','testing',' ',' ',' ');
+INSERT INTO CGDGW.T_GTW_MERC_WHITELIST(WL_VAL, STATUS, REMARK, NOD_ID, REQ_ID, TM_SMP) VALUES('vchoge23@gmail.com','1','testing',' ',' ',' ');
+INSERT INTO CGDGW.T_GTW_MERC_WHITELIST(WL_VAL, STATUS, REMARK, NOD_ID, REQ_ID, TM_SMP) VALUES('vesonga@gmail.com','1','testing',' ',' ',' ');
+INSERT INTO CGDGW.T_GTW_MERC_WHITELIST(WL_VAL, STATUS, REMARK, NOD_ID, REQ_ID, TM_SMP) VALUES('Sirgeorge8@gmail.com','2','testing',' ',' ',' ');
+INSERT INTO CGDGW.T_GTW_MERC_WHITELIST(WL_VAL, STATUS, REMARK, NOD_ID, REQ_ID, TM_SMP) VALUES('vchoge@gmail.com','2','testing',' ',' ',' ');
+INSERT INTO CGDGW.T_GTW_MERC_WHITELIST(WL_VAL, STATUS, REMARK, NOD_ID, REQ_ID, TM_SMP) VALUES('odongobri@gmail.com','2','testing',' ',' ',' ');
+INSERT INTO CGDGW.T_GTW_MERC_WHITELIST(WL_VAL, STATUS, REMARK, NOD_ID, REQ_ID, TM_SMP) VALUES('Ngugi.catherinewangeci@gmail.com','2','testing',' ',' ',' ');
+INSERT INTO CGDGW.T_GTW_MERC_WHITELIST(WL_VAL, STATUS, REMARK, NOD_ID, REQ_ID, TM_SMP) VALUES('sirgeorge8@gmail.com','2','testing',' ',' ',' ');
+INSERT INTO CGDGW.T_GTW_MERC_WHITELIST(WL_VAL, STATUS, REMARK, NOD_ID, REQ_ID, TM_SMP) VALUES('kevoti820@gmail.com','2','testing',' ',' ',' ');
+INSERT INTO CGDGW.T_GTW_MERC_WHITELIST(WL_VAL, STATUS, REMARK, NOD_ID, REQ_ID, TM_SMP) VALUES('angayacm@gmail.com','2','testing',' ',' ',' ');
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+update gsdbas.T_URM_MOWN set REG_MBL_CIPHER = '0227E963DD81FE7B120ACBF36B80B4CA', REG_MBL_MASK = '254****272' where MERC_OWN_NO = '2201000021605';
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    select * from ASDSAP.T_SAP_BNPL_TILLWHITELIST;
+
+    Insert into ASDSAP.T_SAP_BNPL_TILLWHITELIST (TILL_NO,REMARK,STATUS,CRE_OPR,CRE_DT,CRE_TM,UPD_OPR,UPD_DT,UPD_TM,TM_SMP,NOD_ID,REQ_BUS_NO,REQ_ID,ATH_OPR,INP_TM_SMP,ATH_TM_SMP,CHK_TM_SMP) values ('222222','Pay Bill','Y',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','123456789');
+    
+    Insert into ASDSAP.T_SAP_BNPL_TILLWHITELIST (TILL_NO,REMARK,STATUS,CRE_OPR,CRE_DT,CRE_TM,UPD_OPR,UPD_DT,UPD_TM,TM_SMP,NOD_ID,REQ_BUS_NO,REQ_ID,ATH_OPR,INP_TM_SMP,ATH_TM_SMP,CHK_TM_SMP,BIL_USR_ACCT) values ('132638','Pay Bill','Y',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','12345678');
+    
+    Insert into ASDSAP.T_SAP_BNPL_TILLWHITELIST (TILL_NO,REMARK,STATUS,CRE_OPR,CRE_DT,CRE_TM,UPD_OPR,UPD_DT,UPD_TM,TM_SMP,NOD_ID,REQ_BUS_NO,REQ_ID,ATH_OPR,INP_TM_SMP,ATH_TM_SMP,CHK_TM_SMP,BIL_USR_ACCT) values ('100100','Pay Bill','Y',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','987654321');
+    
+INSERT INTO CSDURM.T_URM_PSCORE (USR_NO, PRD_CD, CRD_SCR, LMT_AMT, RSK_CLS, REQ_BUS_NO, CRE_DT, CRE_TM, UPD_DT, UPD_TM, NOD_ID, TM_SMP, REQ_ID, SCORE_CAT, CRE_OPR, UPD_OPR, ATH_OPR, INP_TM_SMP, CHK_TM_SMP, ATH_TM_SMP) 
+VALUES ('4900001321', 'ELONGEN01', '0', '10000', ' ', 'NH8GZ69ETC77', '20230130', '210306', '20230919', '103943', 'customer.urm.s_0_92', '20230919103943+08', 'O!URM!', 'AAA', 'keT00001', 'keT00002', ' ', '20230801173850', '20230801173945', ' ');
+
+INSERT INTO CSDURM.T_URM_PSCORE (USR_NO, PRD_CD, CRD_SCR, LMT_AMT, RSK_CLS, REQ_BUS_NO, CRE_DT, CRE_TM, UPD_DT, UPD_TM, NOD_ID, TM_SMP, REQ_ID, SCORE_CAT, CRE_OPR, UPD_OPR, ATH_OPR, INP_TM_SMP, CHK_TM_SMP, ATH_TM_SMP) 
+VALUES ('4900001325', 'ELONGEN01', '0', '10000', ' ', 'NH8GZ69ETC80', '20230130', '210306', '20230919', '103943', 'customer.urm.s_0_92', '20230919103943+08', 'O!URM!', 'AAA', 'keT00001', 'keT00002', ' ', '20230801173850', '20230801173945', ' ');
+----------------------------------------------------------------------------------------------------------
+
+--------------------------SMS---------------------------------------
+
+SELECT * FROM CGDGW.T_NTC_NTFREC  ORDER BY TM_SMP desc;
+
+SELECT * FROM CGDGW.T_NTC_NTFREC where NTF_TYP = 'MAL';
+
+------------whitelist bnpl-----------------------------------------------------  ORDER BY TM_SMP  desc;
+INSERT INTO CGDGW.T_GTW_TEST_WHITELIST (WL_VAL, WL_TYP, STATUS, REMARK, NOD_ID, REQ_ID, TM_SMP) VALUES ('2541706686842', 'isCloseTester', '1', 'test', ' ', ' ', '20230821151400');
+
+-----getting merch id, shop id----
+
+select MERC_ID , MSHP_ID, MSHP_NM from GSDBAS.T_URM_MSHP WHERE MSHP_NM = 'LOOP LLC TEST ACCOUNT';
+
+select MERC_ID , MSHP_ID, MSHP_NM from GSDBAS.T_URM_MSHP WHERE till.TILL_NO = '133027';
+
+-----delete operator from boss======
+delete from BSDMBU.T_BUI_OPER where oper_no ='254115730087';
+delete from BSDMBU.T_BUI_OPERFUNC where oper_no = '254115730087';
+
+-------discover transactions----------------------------
+select * from gsdpcr.T_RPM_ORD where BUS_CNL = 'DIS';
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+select count(1) transCount from gsdpcr.t_rpm_ord where BUS_CNL = 'DIS' and ORD_STS in ('RF', 'RP', 'ST');
+select count(1) transCount from gsdpcr.t_rpm_ord where BUS_CNL = 'DIS' and ORD_STS in ('ED', 'FT', 'CF', 'BF');
+select count(1) transCount from gsdpcr.t_rpm_ord where BUS_CNL = 'DIS' and ORD_STS in ('RQ', 'WP', 'BP', 'CP', 'PP', 'WA', 'WM');
+select count(1) transCount from gsdpcr.t_rpm_ord where BUS_CNL = 'DIS' and (cre_dt || cre_tm) between to_char(sysdate - (1 / (24 * 60)), 'yyyymmddhh24miss') and to_char(sysdate, 'yyyymmddhh24miss');
+select count(1) transCount from gsdpcr.t_rpm_ord where sys_cnl = 'DIS' and cre_dt = to_char(sysdate, 'yyyymmdd');
+select count(1) transCount from gsdpcr.t_rpm_ord where BUS_CNL = 'DIS';
+select round(avg(second_diff), 0) average_second_diff from (select to_number((to_date((usr_pay_dt || usr_pay_tm), 'yyyymmddhh24miss') - to_date((cre_dt || cre_tm), 'yyyymmddhh24miss')) * 24 * 60 * 60) second_diff from gsdpcr.t_rpm_ord where BUS_CNL = 'DIS');
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+select pinf.CUS_NM_CIPHER, ord.ORD_AMT, ord.REQ_BUS_NO, ord.AC_NO, till.TILL_NO, till.AC_NO, till.TILL_NM
+from gsdpcr.T_RPM_ORD ord
+left join csdurm.T_URM_PINF pinf on pinf.USR_NO = ord.USR_NO
+left join gsdbas.T_URM_MTILL till on till.TILL_NO = ord.PAY_CODE
+where ord.BUS_TYP = '3421' and ord.BUS_CNL = 'DIS';
+----------------------------------------deceased-------------------------------------------------------------------------
+update csdurm.t_urm_pinf set USR_STS = '1' where USR_NO = '4100129198';
